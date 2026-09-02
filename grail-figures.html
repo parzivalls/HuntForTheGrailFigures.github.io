@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUNT FOR THE GRAIL FIGURES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rampart+One&family=Zen+Maru+Gothic:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120e1e;
+    --bg-alt:#1a1430;
+    --panel:#211a3a;
+    --panel-2:#271f45;
+    --line: rgba(255,255,255,0.09);
+    --pink:#ff3d81;
+    --pink-dim:#7a2244;
+    --cyan:#3fe1ff;
+    --gold:#ffcf5c;
+    --text:#f3eefc;
+    --text-dim:#b3a6d6;
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);}
+  body{
+    font-family:'Zen Maru Gothic', sans-serif;
+    background: var(--bg);
+    overflow-x:hidden;
+  }
+  .display{font-family:'Rampart One', cursive;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+
+  /* ---------- LAYERED BACKGROUND ---------- */
+  .bg-blobs{position:fixed;inset:0;z-index:-3;overflow:hidden;pointer-events:none;}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:0.4;mix-blend-mode:screen;}
+  .blob1{width:440px;height:440px;background:radial-gradient(circle, var(--pink), transparent 70%);top:-120px;left:-120px;animation:drift1 26s ease-in-out infinite alternate;}
+  .blob2{width:400px;height:400px;background:radial-gradient(circle, var(--cyan), transparent 70%);top:8%;right:-160px;animation:drift2 32s ease-in-out infinite alternate;}
+  .blob3{width:360px;height:360px;background:radial-gradient(circle, var(--gold), transparent 70%);bottom:-140px;left:15%;animation:drift3 38s ease-in-out infinite alternate;}
+  @keyframes drift1{ from{transform:translate(0,0) scale(1);} to{transform:translate(70px,90px) scale(1.15);} }
+  @keyframes drift2{ from{transform:translate(0,0) scale(1);} to{transform:translate(-60px,70px) scale(1.1);} }
+  @keyframes drift3{ from{transform:translate(0,0) scale(1);} to{transform:translate(50px,-60px) scale(1.12);} }
+
+  .bg-halftone{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background-image: radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1.3px);
+    background-size: 15px 15px;
+    mix-blend-mode:overlay;
+    opacity:0.10;
+  }
+  .bg-vignette{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background: radial-gradient(ellipse 900px 700px at 50% 0%, transparent 55%, rgba(0,0,0,0.5) 100%);
+  }
+  .sparkle-field{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+  .sparkle{position:absolute;border-radius:50%;animation:floatUp linear infinite;will-change:transform,opacity;}
+  @keyframes floatUp{
+    0%{transform:translateY(0) scale(1);opacity:0;}
+    12%{opacity:var(--op,0.7);}
+    88%{opacity:var(--op,0.7);}
+    100%{transform:translateY(-90px) scale(0.5);opacity:0;}
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:0 18px;}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(18,14,30,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:520px;margin:0 auto;padding:12px 18px 10px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .nav-top{display:flex;align-items:center;justify-content:space-between;}
+  .brand{
+    font-family:'Rampart One',cursive;
+    font-size:1.05rem;letter-spacing:0.5px;color:var(--text);
+    display:flex;align-items:baseline;gap:5px;
+  }
+  .brand span{color:var(--pink);}
+  .navlinks{display:flex;gap:16px;font-size:0.74rem;color:var(--text-dim);justify-content:center;font-family:'JetBrains Mono',monospace;}
+  .navlinks a{text-decoration:none;padding:4px 2px;border-bottom:2px solid transparent;transition:.2s;cursor:pointer;}
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--cyan);border-color:var(--cyan);outline:none;}
+  .cart-pill{
+    display:flex;align-items:center;gap:6px;
+    background:var(--panel);border:1px solid var(--line);
+    padding:6px 10px;border-radius:999px;font-size:0.75rem;color:var(--text-dim);
+    cursor:pointer;border:none;font-family:'JetBrains Mono',monospace;
+  }
+  #cartCount{color:var(--gold);font-weight:700;}
+  .sound-toggle{
+    background:var(--panel);border:1px solid var(--line);color:var(--text-dim);
+    width:32px;height:32px;border-radius:999px;cursor:pointer;font-size:0.85rem;line-height:1;
+  }
+  .sound-toggle.muted{color:var(--text-dim);opacity:0.55;}
+
+  /* HERO */
+  .hero{padding:30px 0 26px;text-align:center;position:relative;}
+  .hero-rays{
+    position:absolute;top:38%;left:50%;width:460px;height:460px;
+    transform:translate(-50%,-50%);
+    background: repeating-conic-gradient(from 0deg, rgba(255,61,129,0.16) 0deg 3deg, transparent 3deg 11deg);
+    border-radius:50%;
+    -webkit-mask-image: radial-gradient(circle, black 0%, transparent 68%);
+    mask-image: radial-gradient(circle, black 0%, transparent 68%);
+    animation: raySpin 50s linear infinite;
+    pointer-events:none;
+    z-index:0;
+  }
+  @keyframes raySpin{ to{ transform:translate(-50%,-50%) rotate(360deg);} }
+  .hero-content{position:relative;z-index:1;}
+  .masthead{
+    font-family:'Rampart One',cursive;font-size:1.05rem;letter-spacing:1px;
+    color:var(--text-dim);margin-bottom:14px;text-transform:uppercase;
+  }
+  .masthead span{color:var(--pink);}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:2px;
+    color:var(--cyan);text-transform:uppercase;
+    border:1px solid rgba(63,225,255,0.35);border-radius:999px;
+    padding:5px 12px;margin-bottom:16px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+  h1.hero-title{
+    font-size:2.5rem;line-height:1.05;margin:0 0 14px;
+    text-shadow: 3px 3px 0 var(--pink-dim);
+  }
+  h1.hero-title .accent{color:var(--pink);}
+  .hero-sub{color:var(--text-dim);font-size:0.95rem;max-width:380px;margin:0 auto 26px;line-height:1.5;}
+  .hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+  .btn{
+    font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:0.88rem;
+    padding:13px 22px;border-radius:12px;border:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s;
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn-primary{background:var(--pink);color:#1a0c14;box-shadow:0 6px 0 #a11f52;}
+  .btn-primary:hover{box-shadow:0 4px 0 #a11f52;transform:translateY(2px);}
+  .btn-ghost{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan);}
+  .btn-ghost:hover{background:rgba(63,225,255,0.1);}
+
+  /* GACHA MACHINE SIGNATURE */
+  .machine-stage{
+    margin:20px auto 4px;width:210px;position:relative;
+  }
+  .machine{width:100%;height:auto;display:block;}
+  .capsule{transform-origin:center;}
+  @keyframes drop{
+    0%{transform:translateY(0);}
+    60%{transform:translateY(120px);}
+    75%{transform:translateY(112px) rotate(8deg);}
+    100%{transform:translateY(120px) rotate(0deg);}
+  }
+  .capsule.falling{animation:drop 0.7s cubic-bezier(.3,.9,.4,1.2) forwards;}
+  @keyframes crank-turn{
+    0%{transform:rotate(0deg);} 50%{transform:rotate(200deg);} 100%{transform:rotate(360deg);}
+  }
+  .crank.turning{animation:crank-turn .7s ease-in-out;transform-origin: 168px 108px;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);} 25%{transform:translateX(-3px);} 75%{transform:translateX(3px);}
+  }
+  .machine.shaking{animation:shake .12s linear 4;}
+
+  /* SECTIONS */
+  section{padding:34px 0;}
+  .section-head{margin-bottom:18px;}
+  .section-tag{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--pink);letter-spacing:2px;text-transform:uppercase;}
+  .section-title{font-family:'Rampart One',cursive;font-size:1.5rem;margin:4px 0 6px;}
+  .section-desc{color:var(--text-dim);font-size:0.85rem;line-height:1.5;max-width:400px;}
+
+  /* FILTER CHIPS */
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+    padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    background:var(--panel);color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:.15s;
+  }
+  .chip.active{background:var(--pink);color:#1a0c14;border-color:var(--pink);font-weight:700;}
+
+  .sort-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:-6px 0 16px;}
+  .sort-row label{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-dim);}
+  .sort-row select{
+    background:var(--panel);border:1px solid var(--line);color:var(--text);
+    border-radius:8px;padding:7px 9px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;
+  }
+  .card-designer{font-size:0.65rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+
+  /* PRODUCT GRID */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .card-art{
+    aspect-ratio:1/1;position:relative;display:flex;align-items:center;justify-content:center;
+    background: linear-gradient(160deg, var(--art-a), var(--art-b));
+  }
+  .art-visual{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+  .card-art svg{width:58%;height:58%;filter:drop-shadow(0 6px 10px rgba(0,0,0,0.35));}
+  .card-art img{width:100%;height:100%;object-fit:cover;display:block;}
+  .badge{
+    position:absolute;top:8px;left:8px;font-family:'JetBrains Mono',monospace;
+    font-size:0.6rem;background:rgba(0,0,0,0.45);color:var(--gold);
+    padding:3px 7px;border-radius:6px;letter-spacing:0.5px;
+  }
+  .card-body{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-series{font-size:0.65rem;color:var(--cyan);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.5px;}
+  .card-name{font-size:0.92rem;font-weight:700;line-height:1.2;}
+  .paint-toggle{
+    display:flex;background:var(--bg-alt);border-radius:8px;padding:3px;margin-top:2px;
+  }
+  .paint-toggle button{
+    flex:1;border:none;background:transparent;color:var(--text-dim);
+    font-family:'JetBrains Mono',monospace;font-size:0.62rem;padding:6px 4px;border-radius:6px;cursor:pointer;
+  }
+  .paint-toggle button.active{background:var(--pink);color:#1a0c14;font-weight:700;}
+  .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px;}
+  .price{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.95rem;color:var(--gold);}
+  .add-btn{
+    background:var(--panel-2);border:1px solid var(--line);color:var(--text);
+    width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;line-height:1;
+  }
+  .add-btn:active{background:var(--pink);color:#1a0c14;}
+
+  /* GACHA SECTION */
+  .gacha-panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 18px 20px;text-align:center;
+  }
+  .tier-row{display:flex;gap:8px;margin:16px 0;}
+  .tier{
+    flex:1;border-radius:12px;padding:10px 6px;border:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;
+  }
+  .tier.common{background:rgba(255,255,255,0.03);}
+  .tier.rare{background:rgba(63,225,255,0.06);border-color:rgba(63,225,255,0.3);}
+  .tier.legendary{background:rgba(255,207,92,0.08);border-color:rgba(255,207,92,0.35);}
+  .tier-name{font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;}
+  .tier.common .tier-name{color:var(--text-dim);}
+  .tier.rare .tier-name{color:var(--cyan);}
+  .tier.legendary .tier-name{color:var(--gold);}
+  .tier-odds{font-size:0.95rem;font-weight:700;margin-top:4px;}
+  .gacha-paint-choice{
+    display:flex;gap:8px;margin:14px 0;justify-content:center;
+  }
+  .gacha-paint-choice label{
+    flex:1;max-width:150px;display:flex;flex-direction:column;gap:2px;align-items:center;
+    border:1.5px solid var(--line);border-radius:12px;padding:10px 6px;cursor:pointer;transition:.15s;
+    font-size:0.75rem;
+  }
+  .gacha-paint-choice input{display:none;}
+  .gacha-paint-choice label:has(input:checked){border-color:var(--pink);background:rgba(255,61,129,0.08);}
+  .gacha-paint-choice label:has(input:checked) span{color:var(--pink);font-weight:700;}
+  .gacha-paint-choice small{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:0.62rem;}
+  .pull-btn{
+    width:100%;margin-top:6px;background:linear-gradient(90deg,var(--pink),#ff6fa3);
+    color:#1a0c14;font-family:'Rampart One',cursive;font-size:1.05rem;
+    padding:15px;border:none;border-radius:14px;cursor:pointer;box-shadow:0 6px 0 #a11f52;
+  }
+  .pull-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #a11f52;}
+  .pull-btn:disabled{opacity:0.6;}
+  .pull-price{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-dim);margin-top:8px;}
+
+  /* REVEAL MODAL */
+  .reveal-overlay{
+    position:fixed;inset:0;background:rgba(8,6,16,0.82);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .reveal-overlay.show{display:flex;}
+  .reveal-card{
+    background:var(--panel);border-radius:20px;padding:26px 22px 22px;max-width:320px;width:100%;
+    text-align:center;border:1px solid var(--line);position:relative;
+    animation:pop .35s cubic-bezier(.2,1.4,.4,1);
+    min-height:300px;
+  }
+  @keyframes pop{0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;}}
+  .reveal-close{
+    position:absolute;top:10px;right:10px;background:var(--panel-2);border:1px solid var(--line);
+    color:var(--text-dim);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:0.9rem;
+    z-index:6;line-height:1;
+  }
+  .reveal-close:hover{color:var(--pink);border-color:var(--pink);}
+
+  /* capsule crack animation */
+  .capsule-crack{
+    display:flex;align-items:center;justify-content:center;position:relative;
+    height:230px;
+  }
+  .capsule-shell{position:relative;width:96px;height:96px;}
+  .capsule-half{
+    position:absolute;left:0;width:96px;height:48px;overflow:hidden;
+  }
+  .capsule-half .fillcircle{
+    position:absolute;left:0;width:96px;height:96px;border-radius:50%;
+    box-shadow:inset 0 -6px 10px rgba(0,0,0,0.25);
+  }
+  .capsule-half.top{top:0;border-radius:96px 96px 0 0;}
+  .capsule-half.top .fillcircle{top:0;}
+  .capsule-half.bottom{top:48px;border-radius:0 0 96px 96px;}
+  .capsule-half.bottom .fillcircle{top:-48px;}
+  .capsule-shine{position:absolute;top:14px;left:20px;width:18px;height:34px;background:rgba(255,255,255,0.35);border-radius:50%;filter:blur(2px);}
+  @keyframes wobble{
+    0%,100%{transform:rotate(-4deg);} 50%{transform:rotate(4deg);}
+  }
+  .capsule-shell.wobbling{animation:wobble .18s ease-in-out 3;}
+  @keyframes crackTop{
+    0%{transform:translateY(0) rotate(0);opacity:1;}
+    100%{transform:translateY(-90px) translateX(-18px) rotate(-35deg);opacity:0;}
+  }
+  @keyframes crackBottom{
+    0%{transform:translateY(0) rotate(0);opacity:1;}
+    100%{transform:translateY(90px) translateX(18px) rotate(35deg);opacity:0;}
+  }
+  .capsule-crack.cracking .capsule-half.top{animation:crackTop .5s ease-in forwards;}
+  .capsule-crack.cracking .capsule-half.bottom{animation:crackBottom .5s ease-in forwards;}
+  .crack-flash{
+    position:absolute;width:16px;height:16px;border-radius:50%;
+    background:radial-gradient(circle, #fff, rgba(255,255,255,0) 70%);
+    opacity:0;pointer-events:none;
+  }
+  .capsule-crack.cracking .crack-flash{animation:flash .45s ease-out forwards;}
+  @keyframes flash{
+    0%{opacity:0;transform:scale(0.3);}
+    35%{opacity:1;transform:scale(2.2);}
+    100%{opacity:0;transform:scale(3.4);}
+  }
+  .reveal-content{opacity:0;transform:scale(0.85) translateY(6px);transition:opacity .35s ease, transform .35s cubic-bezier(.2,1.3,.4,1);}
+  .reveal-content.show{opacity:1;transform:scale(1) translateY(0);}
+  .reveal-tier-tag{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;display:inline-block;padding:4px 10px;border-radius:999px;}
+  .reveal-art{width:120px;height:120px;margin:6px auto 14px;border-radius:16px;display:flex;align-items:center;justify-content:center;}
+  .reveal-art svg{width:60%;height:60%;}
+  .reveal-name{font-family:'Rampart One',cursive;font-size:1.3rem;margin-bottom:2px;}
+  .reveal-series{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin-bottom:16px;}
+  .reveal-actions{display:flex;gap:8px;}
+  .reveal-actions button{flex:1;padding:11px;border-radius:10px;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:0.82rem;border:none;cursor:pointer;}
+  .reveal-actions .keep{background:var(--pink);color:#1a0c14;}
+  .reveal-actions .again{background:var(--panel-2);color:var(--text);border:1px solid var(--line);}
+
+  /* CHECKOUT COUNTER */
+  .counter-panel{
+    background:linear-gradient(180deg,#2c2245,#1c1632);
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  }
+  .counter-bar{
+    background:repeating-linear-gradient(90deg,#3a2f1c 0 16px,#4b3c22 16px 32px);
+    height:12px;
+  }
+  .counter-head{
+    display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px;
+  }
+  .counter-head .ct-title{font-family:'Rampart One',cursive;font-size:1rem;}
+  .bell-btn{
+    background:var(--panel-2);border:1px solid var(--line);color:var(--gold);
+    padding:6px 10px;border-radius:8px;font-size:0.72rem;cursor:pointer;font-family:'JetBrains Mono',monospace;
+  }
+  @keyframes ding{0%,100%{transform:rotate(0);}20%{transform:rotate(-15deg);}40%{transform:rotate(12deg);}60%{transform:rotate(-8deg);}80%{transform:rotate(4deg);}}
+  .bell-btn.rung{animation:ding .4s ease;}
+  .receipt{
+    background:var(--panel);margin:0 14px;border-radius:2px;padding:14px 14px 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25) inset;
+  }
+  .receipt-empty{
+    text-align:center;color:var(--text-dim);font-size:0.85rem;padding:26px 10px;line-height:1.6;
+  }
+  .receipt-empty .btn{margin-top:12px;}
+  .receipt-line{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:0.76rem;
+    padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.14);
+  }
+  .receipt-line:last-of-type{border-bottom:none;}
+  .rl-info{flex:1;line-height:1.4;}
+  .rl-info .rl-name{color:var(--text);font-weight:600;font-size:0.82rem;}
+  .rl-info .rl-meta{color:var(--text-dim);font-size:0.65rem;}
+  .rl-right{display:flex;align-items:center;gap:8px;}
+  .rl-price{color:var(--gold);}
+  .rl-remove{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:0.85rem;}
+  .rl-remove:hover{color:var(--pink);}
+  .receipt-total-row{
+    display:flex;justify-content:space-between;padding:14px 0 16px;
+    font-family:'JetBrains Mono',monospace;font-size:0.95rem;font-weight:700;
+  }
+  .receipt-total-row .tot-label{color:var(--text-dim);font-weight:400;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;}
+  .receipt-tear{
+    height:11px;margin:0 14px;
+    background-image:
+      linear-gradient(-45deg, var(--bg) 7px, transparent 0),
+      linear-gradient(45deg, var(--bg) 7px, transparent 0);
+    background-size:14px 14px;
+    background-position:bottom left;
+    background-repeat:repeat-x;
+    background-color:var(--panel);
+  }
+  .counter-footer{padding:16px 18px 20px;}
+  .checkout-btn{
+    width:100%;background:linear-gradient(90deg,var(--gold),#ffe19a);
+    color:#241a06;font-family:'Rampart One',cursive;font-size:1rem;
+    padding:15px;border:none;border-radius:14px;cursor:pointer;box-shadow:0 6px 0 #a17a1e;
+  }
+  .checkout-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #a17a1e;}
+  .checkout-btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .checkout-note{text-align:center;color:var(--text-dim);font-size:0.68rem;margin-top:10px;font-family:'JetBrains Mono',monospace;}
+  .checkout-success{
+    text-align:center;padding:20px 10px;color:var(--text);
+  }
+  .checkout-success .big{font-family:'Rampart One',cursive;font-size:1.15rem;color:var(--gold);margin-bottom:6px;}
+  .checkout-success p{color:var(--text-dim);font-size:0.8rem;line-height:1.5;}
+
+  /* CHECKOUT PACKING/SHIPPING SEQUENCE */
+  .seq-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:170px;padding:6px 4px;}
+  .seq-caption{
+    font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-dim);
+    letter-spacing:1px;text-transform:uppercase;margin-top:10px;opacity:0;
+    transition:opacity .3s ease;
+  }
+  .seq-caption.show{opacity:1;}
+
+  /* stamp stage */
+  .slip-mini{font-size:2.6rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3));}
+  .stamp-mark{
+    position:absolute;top:38%;left:50%;
+    font-family:'Rampart One',cursive;font-size:1.25rem;color:var(--pink);
+    border:3px solid var(--pink);border-radius:8px;padding:5px 16px;
+    transform:translate(-50%,-50%) scale(2.6) rotate(-16deg);opacity:0;
+    white-space:nowrap;
+  }
+  @keyframes stampDown{
+    0%{transform:translate(-50%,-50%) scale(2.6) rotate(-16deg);opacity:0;}
+    55%{transform:translate(-50%,-50%) scale(0.85) rotate(-12deg);opacity:1;}
+    75%{transform:translate(-50%,-50%) scale(1.15) rotate(-12deg);}
+    100%{transform:translate(-50%,-50%) scale(1) rotate(-12deg);opacity:1;}
+  }
+  .stamp-mark.stamped{animation:stampDown .5s cubic-bezier(.2,.9,.3,1.2) forwards;}
+
+  /* box stage */
+  .ship-box{width:150px;height:auto;overflow:visible;}
+  .flap-left{transform:rotate(-98deg);transform-origin:38px 66px;transition:transform .5s cubic-bezier(.3,.8,.3,1);}
+  .flap-right{transform:rotate(98deg);transform-origin:122px 66px;transition:transform .5s cubic-bezier(.3,.8,.3,1);}
+  .box-stage.closed .flap-left{transform:rotate(0deg);}
+  .box-stage.closed .flap-right{transform:rotate(0deg);}
+  .tape-strip{transform:scaleX(0);transform-origin:center;transition:transform .35s ease;}
+  .box-stage.taped .tape-strip{transform:scaleX(1);}
+  .wax-seal{
+    opacity:0;transform:translate(-50%,-50%) scale(2.4) rotate(-25deg);
+    transition:opacity .3s ease, transform .4s cubic-bezier(.2,1.4,.35,1);
+  }
+  .box-stage.sealed .wax-seal{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-8deg);}
+
+  /* order summary */
+  .order-summary{text-align:center;padding:6px 4px 4px;}
+  .order-id{
+    font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-dim);
+    letter-spacing:1px;margin-bottom:6px;
+  }
+  .order-id span{color:var(--gold);}
+  .order-summary .big{font-family:'Rampart One',cursive;font-size:1.15rem;color:var(--gold);margin-bottom:8px;}
+  .order-meta{
+    display:flex;justify-content:center;gap:18px;margin:12px 0 14px;
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-dim);
+  }
+  .order-meta div{text-align:center;}
+  .order-meta b{display:block;color:var(--text);font-size:0.85rem;margin-bottom:2px;font-family:'Zen Maru Gothic',sans-serif;}
+  .order-actions{display:flex;gap:8px;margin-top:4px;}
+  .order-actions button{flex:1;padding:11px;border-radius:10px;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:0.78rem;border:none;cursor:pointer;}
+  .order-actions .track{background:var(--panel-2);color:var(--text);border:1px solid var(--line);}
+  .order-actions .newOrder{background:var(--pink);color:#1a0c14;}
+
+  /* ---------- ACCOUNT / AUTH / ADMIN ---------- */
+  .account-panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 18px 22px;
+  }
+  .auth-tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--bg-alt);border-radius:10px;padding:3px;}
+  .auth-tabs button{
+    flex:1;border:none;background:transparent;color:var(--text-dim);font-weight:700;
+    font-family:'Zen Maru Gothic',sans-serif;font-size:0.8rem;padding:9px 4px;border-radius:8px;cursor:pointer;
+  }
+  .auth-tabs button.active{background:var(--pink);color:#1a0c14;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:5px;}
+  .field input{
+    width:100%;background:var(--bg-alt);border:1px solid var(--line);color:var(--text);
+    border-radius:9px;padding:11px 12px;font-size:0.88rem;font-family:'Zen Maru Gothic',sans-serif;
+  }
+  .field input:focus{outline:none;border-color:var(--pink);}
+  .auth-error{color:var(--pink);font-size:0.75rem;margin:-4px 0 12px;font-family:'JetBrains Mono',monospace;}
+  .auth-submit{
+    width:100%;background:var(--pink);color:#1a0c14;font-family:'Rampart One',cursive;font-size:0.95rem;
+    padding:13px;border:none;border-radius:12px;cursor:pointer;box-shadow:0 5px 0 #a11f52;
+  }
+  .auth-submit:active{transform:translateY(2px);box-shadow:0 3px 0 #a11f52;}
+  .auth-note{text-align:center;color:var(--text-dim);font-size:0.68rem;margin-top:12px;font-family:'JetBrains Mono',monospace;line-height:1.5;}
+
+  .account-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .account-greet{font-family:'Rampart One',cursive;font-size:1rem;}
+  .account-greet span{color:var(--pink);}
+  .logout-btn{background:var(--panel-2);border:1px solid var(--line);color:var(--text-dim);font-size:0.7rem;padding:7px 11px;border-radius:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;}
+
+  .hunt-empty{text-align:center;color:var(--text-dim);font-size:0.85rem;padding:20px 8px;line-height:1.6;}
+  .hunt-card{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:14px 14px 16px;margin-bottom:12px;}
+  .hunt-card:last-child{margin-bottom:0;}
+  .hunt-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
+  .hunt-id{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--gold);}
+  .hunt-date{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--text-dim);}
+  .hunt-meta{font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;}
+  .hunt-meta b{color:var(--text);font-weight:700;}
+
+  .tracker{display:flex;align-items:center;}
+  .tracker-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+  .tracker-dot{width:16px;height:16px;border-radius:50%;background:var(--bg-alt);border:2px solid var(--line);z-index:1;transition:.2s;}
+  .tracker-step.done .tracker-dot{background:var(--pink);border-color:var(--pink);}
+  .tracker-step.current .tracker-dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,207,92,0.25);}
+  .tracker-line{position:absolute;top:7px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0;}
+  .tracker-step:first-child .tracker-line{display:none;}
+  .tracker-step.done .tracker-line, .tracker-step.current .tracker-line{background:var(--pink);}
+  .tracker-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);margin-top:6px;text-align:center;line-height:1.2;}
+  .tracker-step.current .tracker-label{color:var(--gold);font-weight:700;}
+  .tracker-step.done .tracker-label{color:var(--text);}
+
+  .admin-login{max-width:280px;margin:0 auto;}
+  .admin-list{display:flex;flex-direction:column;gap:12px;}
+  .admin-card{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:14px;}
+  .admin-card .hunt-top{margin-bottom:6px;}
+  .admin-email{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--cyan);margin-bottom:8px;}
+  .admin-status-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+  .admin-status-row select{
+    flex:1;background:var(--bg-alt);border:1px solid var(--line);color:var(--text);
+    border-radius:8px;padding:8px 8px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+  }
+  .admin-saved{font-size:0.65rem;color:var(--gold);font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity .3s;}
+  .admin-saved.show{opacity:1;}
+  .account-loading{text-align:center;color:var(--text-dim);font-size:0.8rem;padding:20px;}
+
+  .notify-row{margin-bottom:16px;}
+  .notify-toggle{
+    display:flex;align-items:center;gap:10px;background:var(--bg-alt);border:1px solid var(--line);
+    border-radius:10px;padding:11px 12px;cursor:pointer;font-size:0.8rem;
+  }
+  .notify-toggle input{width:16px;height:16px;accent-color:var(--pink);flex:0 0 auto;}
+
+  .admin-subscribers{
+    background:var(--bg-alt);border:1px solid var(--line);border-radius:12px;
+    padding:14px;margin-bottom:16px;
+  }
+  .admin-sub-count{font-size:0.85rem;margin-bottom:8px;}
+  .admin-sub-count b{color:var(--gold);font-family:'JetBrains Mono',monospace;}
+  .admin-sub-note{color:var(--text-dim);font-size:0.68rem;line-height:1.5;margin-top:8px;}
+
+  .admin-tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--bg-alt);border-radius:10px;padding:3px;}
+  .admin-tabs button{
+    flex:1;border:none;background:transparent;color:var(--text-dim);font-weight:700;
+    font-family:'Zen Maru Gothic',sans-serif;font-size:0.78rem;padding:9px 4px;border-radius:8px;cursor:pointer;
+  }
+  .admin-tabs button.active{background:var(--pink);color:#1a0c14;}
+
+  .catalog-add-btn{
+    width:100%;background:var(--panel-2);border:1.5px dashed var(--line);color:var(--text);
+    font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:0.82rem;
+    padding:13px;border-radius:12px;cursor:pointer;margin-bottom:14px;
+  }
+  .catalog-add-btn:hover{border-color:var(--pink);color:var(--pink);}
+
+  .catalog-list{display:flex;flex-direction:column;gap:10px;}
+  .catalog-row{
+    display:flex;gap:10px;align-items:center;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:12px;padding:10px;
+  }
+  .catalog-thumb{
+    width:52px;height:52px;border-radius:9px;flex:0 0 auto;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg, var(--art-a,#372c5e), var(--art-b,#1a1430));
+  }
+  .catalog-thumb img{width:100%;height:100%;object-fit:cover;}
+  .catalog-thumb svg{width:60%;height:60%;}
+  .catalog-info{flex:1;min-width:0;}
+  .catalog-info .ci-name{font-size:0.84rem;font-weight:700;line-height:1.2;}
+  .catalog-info .ci-meta{font-size:0.65rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+  .catalog-actions{display:flex;gap:6px;flex:0 0 auto;}
+  .catalog-actions button{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg-alt);
+    color:var(--text-dim);cursor:pointer;font-size:0.85rem;
+  }
+  .catalog-actions .edit-btn:hover{color:var(--cyan);border-color:var(--cyan);}
+  .catalog-actions .del-btn:hover{color:var(--pink);border-color:var(--pink);}
+
+  .product-form{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px;}
+  .product-form .form-title{font-family:'Rampart One',cursive;font-size:0.92rem;margin-bottom:12px;}
+  .form-row{display:flex;gap:10px;}
+  .form-row .field{flex:1;}
+  .radio-row{display:flex;gap:8px;margin-bottom:12px;}
+  .radio-row label{
+    flex:1;text-align:center;border:1.5px solid var(--line);border-radius:9px;padding:9px 4px;
+    cursor:pointer;font-size:0.76rem;color:var(--text-dim);
+  }
+  .radio-row input{display:none;}
+  .radio-row label:has(input:checked){border-color:var(--pink);color:var(--pink);font-weight:700;background:rgba(255,61,129,0.08);}
+  .photo-upload-row{display:flex;gap:10px;margin-bottom:12px;}
+  .photo-upload{flex:1;}
+  .photo-upload label.pu-label{display:block;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:5px;}
+  .photo-drop{
+    border:1.5px dashed var(--line);border-radius:10px;height:84px;position:relative;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;background:var(--panel);
+  }
+  .photo-drop img{width:100%;height:100%;object-fit:cover;}
+  .photo-drop .pd-label{font-size:0.65rem;color:var(--text-dim);text-align:center;padding:4px;font-family:'JetBrains Mono',monospace;}
+  .photo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+  .photo-clear{
+    display:block;width:100%;margin-top:5px;background:none;border:none;color:var(--text-dim);
+    font-size:0.62rem;text-decoration:underline;cursor:pointer;font-family:'JetBrains Mono',monospace;
+  }
+  .form-actions{display:flex;gap:8px;margin-top:4px;}
+  .form-actions button{flex:1;padding:11px;border-radius:10px;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:0.8rem;border:none;cursor:pointer;}
+  .form-actions .save-btn{background:var(--pink);color:#1a0c14;}
+  .form-actions .cancel-btn{background:var(--panel);color:var(--text-dim);border:1px solid var(--line);}
+  .form-error{color:var(--pink);font-size:0.72rem;margin:-4px 0 10px;font-family:'JetBrains Mono',monospace;}
+
+  footer{padding:30px 0 40px;text-align:center;color:var(--text-dim);font-size:0.75rem;border-top:1px solid var(--line);margin-top:10px;}
+  footer .fbrand{font-family:'Rampart One',cursive;color:var(--text);margin-bottom:6px;font-size:1rem;}
+  footer .fbrand span{color:var(--pink);}
+  footer .owner-link{display:block;margin-top:10px;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:0.7rem;}
+  footer .owner-link:hover{color:var(--cyan);}
+
+  @media (prefers-reduced-motion: reduce){
+    .capsule.falling, .crank.turning, .machine.shaking, .reveal-card, .capsule-shell.wobbling,
+    .capsule-crack.cracking .capsule-half.top, .capsule-crack.cracking .capsule-half.bottom,
+    .capsule-crack.cracking .crack-flash{animation:none !important;}
+    .reveal-content{transition:none;}
+    .stamp-mark.stamped{animation:none !important;opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-12deg);}
+    .flap-left, .flap-right, .tape-strip, .wax-seal{transition:none !important;}
+    .blob, .hero-rays, .sparkle{animation:none !important;opacity:0.15;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+<div class="bg-halftone" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
+<div class="sparkle-field" id="sparkleField" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-top">
+      <div class="brand">GRAIL<span>FIGURES</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="sound-toggle" id="soundToggle" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+        <button class="cart-pill" id="cartPillBtn">🛒 <span id="cartCount">0</span></button>
+      </div>
+    </div>
+    <div class="navlinks">
+      <a onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop</a>
+      <a onclick="document.getElementById('gacha').scrollIntoView({behavior:'smooth'})">Gacha</a>
+      <a onclick="document.getElementById('counter').scrollIntoView({behavior:'smooth'})">Counter</a>
+      <a onclick="document.getElementById('account').scrollIntoView({behavior:'smooth'})">Account</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-rays" aria-hidden="true"></div>
+    <div class="hero-content">
+    <div class="masthead">HUNT FOR THE <span>GRAIL</span> FIGURES</div>
+    <div class="eyebrow"><span class="dot"></span>PRINTED TO ORDER · UNLIMITED POSES</div>
+    <h1 class="hero-title">PULL. PRINT.<br><span class="accent">PAINT.</span></h1>
+    <p class="hero-sub">Fan-favorite figures cast in resin, sold raw or hand-painted. Can't decide? Let the capsule choose for you.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('gacha').scrollIntoView({behavior:'smooth'})">Try the Gacha</button>
+    </div>
+
+    <div class="machine-stage">
+      <svg class="machine" id="heroMachine" viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="110" cy="228" rx="70" ry="8" fill="#000" opacity="0.35"/>
+        <rect x="55" y="150" width="110" height="66" rx="10" fill="#2b2350" stroke="#3a2f66" stroke-width="2"/>
+        <rect x="55" y="150" width="110" height="14" rx="7" fill="#ff3d81"/>
+        <circle class="crank" cx="168" cy="182" r="10" fill="#ffcf5c" stroke="#a17a1e" stroke-width="2"/>
+        <rect x="176" y="177" width="14" height="6" rx="3" fill="#ffcf5c"/>
+        <rect x="72" y="196" width="76" height="16" rx="4" fill="#120e1e"/>
+        <circle cx="86" cy="204" r="5" fill="#3fe1ff"/>
+        <rect x="98" y="200" width="36" height="8" rx="2" fill="#3fe1ff" opacity="0.6"/>
+        <path d="M60 150 C60 90 65 55 110 55 C155 55 160 90 160 150 Z" fill="#372c5e" stroke="#4a3d78" stroke-width="2"/>
+        <path d="M68 148 C68 96 72 63 110 63 C148 63 152 96 152 148 Z" fill="#1a1430" opacity="0.55"/>
+        <g id="capsulesGroup">
+          <circle class="capsule" cx="92" cy="120" r="13" fill="#ff3d81"/>
+          <circle class="capsule" cx="92" cy="120" r="13" fill="none" stroke="#1a0c14" stroke-width="1.5" opacity="0.4"/>
+          <circle class="capsule" cx="122" cy="132" r="13" fill="#3fe1ff"/>
+          <circle class="capsule" cx="108" cy="100" r="12" fill="#ffcf5c"/>
+          <circle class="capsule" cx="130" cy="105" r="11" fill="#ff3d81"/>
+          <circle class="capsule" cx="98" cy="140" r="12" fill="#3fe1ff"/>
+        </g>
+      </svg>
+    </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section id="shop">
+    <div class="section-head">
+      <div class="section-tag">The Catalog</div>
+      <div class="section-title">Pick Your Fighter</div>
+      <div class="section-desc">Every listing ships raw resin by default — flip to Painted for a hand-finished piece.</div>
+    </div>
+
+    <div class="chips" id="chipRow">
+      <div class="chip active" data-filter="all">All</div>
+      <div class="chip" data-filter="fullsize">Fullsize</div>
+      <div class="chip" data-filter="bust">Bust</div>
+      <div class="chip" data-filter="anime">Anime</div>
+      <div class="chip" data-filter="games">Games</div>
+      <div class="chip" data-filter="other">Other</div>
+    </div>
+
+    <div class="sort-row">
+      <label for="sortSelect">Sort by</label>
+      <select id="sortSelect">
+        <option value="featured">Featured</option>
+        <option value="name">Name (A–Z)</option>
+        <option value="designer">Designer / Patreon (A–Z)</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+      </select>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <!-- GACHA -->
+  <section id="gacha">
+    <div class="section-head">
+      <div class="section-tag">Feeling Lucky?</div>
+      <div class="section-title">Blind Box Pull</div>
+      <div class="section-desc">One capsule, one mystery figure from the full catalog. Higher tiers weight toward rarer sculpts.</div>
+    </div>
+
+    <div class="gacha-panel">
+      <svg class="machine" id="gachaMachine" viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg" style="max-width:180px;">
+        <ellipse cx="110" cy="228" rx="70" ry="8" fill="#000" opacity="0.35"/>
+        <rect x="55" y="150" width="110" height="66" rx="10" fill="#2b2350" stroke="#3a2f66" stroke-width="2"/>
+        <rect x="55" y="150" width="110" height="14" rx="7" fill="#3fe1ff"/>
+        <circle class="crank" cx="168" cy="182" r="10" fill="#ffcf5c" stroke="#a17a1e" stroke-width="2"/>
+        <rect x="176" y="177" width="14" height="6" rx="3" fill="#ffcf5c"/>
+        <rect x="72" y="196" width="76" height="16" rx="4" fill="#120e1e"/>
+        <circle cx="86" cy="204" r="5" fill="#ff3d81"/>
+        <rect x="98" y="200" width="36" height="8" rx="2" fill="#ff3d81" opacity="0.6"/>
+        <path d="M60 150 C60 90 65 55 110 55 C155 55 160 90 160 150 Z" fill="#372c5e" stroke="#4a3d78" stroke-width="2"/>
+        <path d="M68 148 C68 96 72 63 110 63 C148 63 152 96 152 148 Z" fill="#1a1430" opacity="0.55"/>
+        <g id="gachaCapsulesGroup">
+          <circle class="capsule" cx="92" cy="120" r="13" fill="#ffcf5c"/>
+          <circle class="capsule" cx="122" cy="132" r="13" fill="#ff3d81"/>
+          <circle class="capsule" cx="108" cy="100" r="12" fill="#3fe1ff"/>
+          <circle class="capsule" cx="130" cy="105" r="11" fill="#ffcf5c"/>
+          <circle class="capsule" cx="98" cy="140" r="12" fill="#ff3d81"/>
+        </g>
+      </svg>
+
+      <div class="tier-row">
+        <div class="tier common"><div class="tier-name">Common</div><div class="tier-odds mono">65%</div></div>
+        <div class="tier rare"><div class="tier-name">Rare</div><div class="tier-odds mono">28%</div></div>
+        <div class="tier legendary"><div class="tier-name">Legendary</div><div class="tier-odds mono">7%</div></div>
+      </div>
+
+      <div class="gacha-paint-choice">
+        <label><input type="radio" name="gachaPaint" value="unpainted" checked><span>🪨 Unpainted</span><small>$22</small></label>
+        <label><input type="radio" name="gachaPaint" value="painted"><span>🎨 Painted</span><small>$48</small></label>
+      </div>
+
+      <button class="pull-btn" id="pullBtn">🎰 PULL A CAPSULE</button>
+      <div class="pull-price">One pull per click · figure chosen at random from the full catalog</div>
+    </div>
+  </section>
+
+  <!-- CHECKOUT COUNTER -->
+  <section id="counter">
+    <div class="section-head">
+      <div class="section-tag">Ready When You Are</div>
+      <div class="section-title">The Checkout Counter</div>
+      <div class="section-desc">Everything you've grabbed from the shop or won from the capsule machine, rung up right here.</div>
+    </div>
+
+    <div class="counter-panel">
+      <div class="counter-bar"></div>
+      <div class="counter-head">
+        <div class="ct-title">🧾 Order Slip</div>
+        <button class="bell-btn" id="bellBtn">🔔 Ring for service</button>
+      </div>
+      <div class="receipt" id="receipt"></div>
+      <div class="receipt-tear"></div>
+      <div class="counter-footer" id="counterFooter">
+        <button class="checkout-btn" id="checkoutBtn" disabled>Complete the Hunt</button>
+        <div class="checkout-note">Payments aren't wired up in this prototype yet</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCOUNT / MY HUNTS -->
+  <section id="account">
+    <div class="section-head">
+      <div class="section-tag" id="accountTag">Track Your Order</div>
+      <div class="section-title" id="accountTitle">My Hunts</div>
+      <div class="section-desc" id="accountDesc">Log in to see every figure you've ordered and where it's at in the queue.</div>
+    </div>
+    <div class="account-panel" id="accountPanel">
+      <div class="account-loading">Loading...</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="reveal-overlay" id="revealOverlay">
+  <div class="reveal-card">
+    <button class="reveal-close" id="revealCloseBtn" aria-label="Close without adding to cart">✕</button>
+
+    <div class="capsule-crack" id="capsuleCrack">
+      <div class="capsule-shell" id="capsuleShell">
+        <div class="capsule-half top" id="capsuleTop"><div class="fillcircle"></div></div>
+        <div class="capsule-half bottom" id="capsuleBottom"><div class="fillcircle"></div></div>
+        <div class="capsule-shine"></div>
+      </div>
+      <div class="crack-flash"></div>
+    </div>
+
+    <div class="reveal-content" id="revealContent">
+      <span class="reveal-tier-tag" id="revealTierTag">RARE</span>
+      <div class="reveal-art" id="revealArt"></div>
+      <div class="reveal-name" id="revealName">???</div>
+      <div class="reveal-series" id="revealSeries">???</div>
+      <div class="reveal-actions">
+        <button class="again" id="pullAgainBtn">Pull Again</button>
+        <button class="keep" id="keepBtn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fbrand">HUNT FOR THE <span>GRAIL</span> FIGURES</div>
+  Prototype storefront — built to show layout, catalog, gacha and checkout flow.<br>Payments &amp; inventory not connected yet.
+  <span class="owner-link" id="ownerLoginLink">Shop Owner Login</span>
+</footer>
+
+<script>
+/* ---------- SVG figure icon (generic silhouette) ---------- */
+function figureSvg(colorFill){
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="24" r="14" class="fill" fill="${colorFill}"/>
+    <path class="fill" fill="${colorFill}" d="M50 40 C30 40 24 58 26 76 L30 92 L70 92 L74 76 C76 58 70 40 50 40 Z"/>
+    <path class="fill" fill="${colorFill}" d="M26 50 L14 70 L22 76 L34 58 Z"/>
+    <path class="fill" fill="${colorFill}" d="M74 50 L86 70 L78 76 L66 58 Z"/>
+  </svg>`;
+}
+
+/* ---------- background sparkles ---------- */
+(function initSparkles(){
+  const field = document.getElementById("sparkleField");
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!field || reduceMotion) return;
+  const colors = ["#ff3d81", "#3fe1ff", "#ffcf5c"];
+  const count = 16;
+  for (let i=0;i<count;i++){
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    const size = 2 + Math.random()*3;
+    const color = colors[i % colors.length];
+    const duration = 8 + Math.random()*10;
+    const delay = -Math.random()*duration;
+    s.style.left = Math.random()*100 + "%";
+    s.style.top = Math.random()*100 + "%";
+    s.style.width = size + "px";
+    s.style.height = size + "px";
+    s.style.background = color;
+    s.style.boxShadow = `0 0 ${size*2.5}px ${color}`;
+    s.style.setProperty("--op", (0.4 + Math.random()*0.4).toFixed(2));
+    s.style.animationDuration = duration + "s";
+    s.style.animationDelay = delay + "s";
+    field.appendChild(s);
+  }
+})();
+
+/* ---------- sound engine (synthesized, no external files) ---------- */
+let audioMuted = false;
+let actx = null;
+function getCtx(){
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === "suspended") actx.resume();
+  return actx;
+}
+function tone(freq, dur, type, gainLevel, delay){
+  if (audioMuted) return;
+  const ctx = getCtx();
+  const t0 = ctx.currentTime + (delay||0);
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type || "sine";
+  osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.exponentialRampToValueAtTime(gainLevel || 0.2, t0 + 0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t0);
+  osc.stop(t0 + dur + 0.03);
+}
+function click(delay){
+  if (audioMuted) return;
+  const ctx = getCtx();
+  const t0 = ctx.currentTime + (delay||0);
+  const bufSize = Math.floor(ctx.sampleRate * 0.02);
+  const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i=0;i<bufSize;i++){ data[i] = (Math.random()*2-1) * (1 - i/bufSize); }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.value = 2200;
+  const gain = ctx.createGain();
+  gain.gain.value = 0.35;
+  noise.connect(filter).connect(gain).connect(ctx.destination);
+  noise.start(t0);
+}
+function playBellSound(){
+  tone(1046.5, 0.7, "triangle", 0.28, 0);
+  tone(1568, 0.55, "sine", 0.14, 0.02);
+  tone(2093, 0.4, "sine", 0.06, 0.03);
+}
+function playCrankSound(){
+  // a few mechanical clicks over ~500ms as the crank turns
+  for (let i=0;i<5;i++) click(i*0.11);
+}
+function playDropSound(){
+  if (audioMuted) return;
+  const ctx = getCtx();
+  const t0 = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(220, t0);
+  osc.frequency.exponentialRampToValueAtTime(55, t0 + 0.28);
+  gain.gain.setValueAtTime(0.3, t0);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.3);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t0); osc.stop(t0 + 0.32);
+}
+function playCrackSound(){
+  click(0);
+  tone(500, 0.09, "square", 0.16, 0.01);
+  tone(300, 0.12, "square", 0.1, 0.03);
+}
+function playChimeSound(tier){
+  const notes = tier === "LEGENDARY" ? [523.25,659.25,783.99,1046.5]
+              : tier === "RARE" ? [523.25,659.25,783.99]
+              : [523.25,659.25];
+  notes.forEach((f,i) => tone(f, 0.4, "triangle", 0.14, i*0.09));
+}
+function playStampSound(){
+  click(0);
+  tone(130, 0.18, "sine", 0.3, 0);
+}
+function playTapeSound(){
+  if (audioMuted) return;
+  const ctx = getCtx();
+  const dur = 0.3;
+  const bufSize = Math.floor(ctx.sampleRate * dur);
+  const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i=0;i<bufSize;i++){ data[i] = (Math.random()*2-1) * (1 - i/bufSize) * 0.6; }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = "bandpass";
+  filter.frequency.value = 3200;
+  filter.Q.value = 0.6;
+  const gain = ctx.createGain();
+  gain.gain.value = 0.4;
+  noise.connect(filter).connect(gain).connect(ctx.destination);
+  noise.start();
+}
+function playSealSound(){
+  click(0);
+  tone(180, 0.2, "sine", 0.3, 0);
+  tone(880, 0.35, "triangle", 0.15, 0.06);
+}
+function playShipChime(){
+  [523.25, 659.25, 783.99, 1046.5].forEach((f,i) => tone(f, 0.38, "triangle", 0.15, i*0.08));
+}
+
+const soundToggle = document.getElementById("soundToggle");
+soundToggle.addEventListener("click", () => {
+  audioMuted = !audioMuted;
+  soundToggle.textContent = audioMuted ? "🔇" : "🔊";
+  soundToggle.classList.toggle("muted", audioMuted);
+  if (!audioMuted) getCtx();
+});
+
+/* ---------- catalog ---------- */
+const DEFAULT_PRODUCTS = [
+  {id:"p1",  name:"Kokushibo", series:"Demon Slayer", designer:"Tanuki Figures", cat:["fullsize","anime"], base:38, paint:65, a:"#3a2358", b:"#1c1030", photoRaw:null, photoPainted:null},
+  {id:"p2",  name:"M. Bison", series:"Street Fighter", designer:"Tanuki Figures", cat:["fullsize","games"], base:36, paint:60, a:"#5a1f2e", b:"#2a0f18", photoRaw:null, photoPainted:null},
+  {id:"p3",  name:"Ichigo", series:"Bleach", designer:"Tanuki Figures", cat:["bust","anime"], base:22, paint:42, a:"#402a5c", b:"#201436", photoRaw:null, photoPainted:null},
+  {id:"p4",  name:"Guts", series:"Berserk", designer:"Tanuki Figures", cat:["fullsize","anime"], base:40, paint:70, a:"#3a2a20", b:"#1c1410", photoRaw:null, photoPainted:null},
+  {id:"p5",  name:"Tifa", series:"Final Fantasy VII", designer:"Tanuki Figures", cat:["bust","games"], base:24, paint:46, a:"#5c2340", b:"#2c1120", photoRaw:null, photoPainted:null},
+  {id:"p6",  name:"Green Ranger", series:"Power Rangers", designer:"Tanuki Figures", cat:["bust","other"], base:23, paint:44, a:"#1e5c34", b:"#0f2c1a", photoRaw:null, photoPainted:null},
+  {id:"p7",  name:"Qipao Yae Miko", series:"Genshin Impact", designer:"Eggy", cat:["fullsize","games"], base:42, paint:74, a:"#5c2323", b:"#2c1010", photoRaw:null, photoPainted:null},
+  {id:"p8",  name:"Bayonetta", series:"Bayonetta", designer:"3D.moonn", cat:["fullsize","games"], base:39, paint:68, a:"#241e46", b:"#100c24", photoRaw:null, photoPainted:null},
+  {id:"p9",  name:"Zatanna", series:"DC Comics", designer:"3D.moonn", cat:["fullsize","other"], base:37, paint:64, a:"#22305c", b:"#10182c", photoRaw:null, photoPainted:null},
+  {id:"p10", name:"Anakin Skywalker", series:"Star Wars", designer:"Star Wars 3D Models", cat:["bust","other"], base:26, paint:48, a:"#2a2a2a", b:"#141414", photoRaw:null, photoPainted:null},
+  {id:"p11", name:"Leia", series:"Star Wars", designer:"Star Wars 3D Models", cat:["bust","other"], base:25, paint:47, a:"#4a2350", b:"#221028", photoRaw:null, photoPainted:null},
+  {id:"p12", name:"Mirajane (Satan Soul)", series:"Fairy Tail", designer:"3D.moonn", cat:["fullsize","anime"], base:41, paint:72, a:"#5c1f1f", b:"#2c0e0e", photoRaw:null, photoPainted:null},
+];
+const GRADIENT_PAIRS = [
+  ["#3a2358","#1c1030"], ["#5a1f2e","#2a0f18"], ["#402a5c","#201436"], ["#3a2a20","#1c1410"],
+  ["#5c2340","#2c1120"], ["#1e5c34","#0f2c1a"], ["#5c2323","#2c1010"], ["#241e46","#100c24"],
+  ["#22305c","#10182c"], ["#2a2a2a","#141414"], ["#4a2350","#221028"], ["#5c1f1f","#2c0e0e"]
+];
+function pickGradientForName(name){
+  let hash = 0;
+  for (let i=0;i<name.length;i++) hash = (hash*31 + name.charCodeAt(i)) >>> 0;
+  return GRADIENT_PAIRS[hash % GRADIENT_PAIRS.length];
+}
+
+let products = [];
+
+async function loadProducts(){
+  const keys = await kvList("product:", true);
+  if (keys.length === 0){
+    for (const p of DEFAULT_PRODUCTS){ await kvSet(`product:${p.id}`, p, true); }
+    return DEFAULT_PRODUCTS.map(p => Object.assign({}, p));
+  }
+  const list = [];
+  for (const k of keys){ const p = await kvGet(k, true); if (p) list.push(p); }
+  list.sort((a,b) => (a.name||"").localeCompare(b.name||""));
+  return list;
+}
+async function saveProduct(p){
+  await kvSet(`product:${p.id}`, p, true);
+}
+async function deleteProduct(id){
+  await kvDelete(`product:${id}`, true);
+}
+
+/* image helper: reads a file, downsizes it, and returns a compact JPEG data URL */
+function readAndCompressImage(file, maxDim, quality){
+  maxDim = maxDim || 480; quality = quality || 0.72;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > h && w > maxDim){ h = Math.round(h*maxDim/w); w = maxDim; }
+        else if (h >= w && h > maxDim){ w = Math.round(w*maxDim/h); h = maxDim; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = () => reject(new Error("Couldn't read that image."));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error("Couldn't read that file."));
+    reader.readAsDataURL(file);
+  });
+}
+
+const GACHA_PRICE_UNPAINTED = 22;
+const GACHA_PRICE_PAINTED = 48;
+
+let filter = "all";
+let sortMode = "featured";
+const grid = document.getElementById("productGrid");
+const cartCountEl = document.getElementById("cartCount");
+
+/* ---------- cart state ---------- */
+let cartItems = [];
+let itemSeq = 1;
+
+function addToCart(item){
+  cartItems.push(Object.assign({id: itemSeq++}, item));
+  updateCartBadge();
+  renderCart();
+}
+function removeFromCart(id){
+  cartItems = cartItems.filter(i => i.id !== id);
+  updateCartBadge();
+  renderCart();
+}
+function updateCartBadge(){
+  cartCountEl.textContent = cartItems.length;
+}
+
+/* ---------- shop render ---------- */
+function cardArtInner(p, mode, idx){
+  const photo = mode === "painted" ? (p.photoPainted || p.photoRaw) : (p.photoRaw || p.photoPainted);
+  if (photo) return `<img src="${photo}" alt="${escapeHtml(p.name)}">`;
+  const color = mode === "painted" ? ["#ff3d81","#3fe1ff","#ffcf5c"][idx%3] : "#c9c2de";
+  return figureSvg(color);
+}
+
+function sortProducts(list, mode){
+  const arr = list.slice();
+  if (mode === "name"){
+    arr.sort((a,b) => a.name.localeCompare(b.name));
+  } else if (mode === "designer"){
+    arr.sort((a,b) => {
+      const da = a.designer || "\uffff"; // unlisted designers sort to the end
+      const db = b.designer || "\uffff";
+      return da.localeCompare(db) || a.name.localeCompare(b.name);
+    });
+  } else if (mode === "price-low"){
+    arr.sort((a,b) => a.base - b.base);
+  } else if (mode === "price-high"){
+    arr.sort((a,b) => b.base - a.base);
+  }
+  // "featured" = catalog order, no sort
+  return arr;
+}
+
+function render(){
+  grid.innerHTML = "";
+  let visible = products.filter(p => filter==="all" || p.cat.includes(filter));
+  visible = sortProducts(visible, sortMode);
+  if (visible.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.85rem;padding:26px 10px;">No figures here yet.</div>`;
+    return;
+  }
+  visible.forEach((p, idx) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-art" style="--art-a:${p.a};--art-b:${p.b}">
+          <span class="badge">${p.cat.includes("fullsize") ? "FULLSIZE" : "BUST"}</span>
+          <div class="art-visual">${cardArtInner(p, "unpainted", idx)}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-series">${escapeHtml(p.series)}</div>
+          <div class="card-name">${escapeHtml(p.name)}</div>
+          ${p.designer ? `<div class="card-designer">by ${escapeHtml(p.designer)}</div>` : ""}
+          <div class="paint-toggle">
+            <button class="pt-un active" data-mode="unpainted">🪨 RAW</button>
+            <button class="pt-pa" data-mode="painted">🎨 PAINTED</button>
+          </div>
+          <div class="card-footer">
+            <div class="price">$${p.base}</div>
+            <button class="add-btn" title="Add to cart">+</button>
+          </div>
+        </div>`;
+      const artVisual = card.querySelector(".art-visual");
+      const un = card.querySelector(".pt-un");
+      const pa = card.querySelector(".pt-pa");
+      const priceEl = card.querySelector(".price");
+      const addBtn = card.querySelector(".add-btn");
+      let mode = "unpainted";
+      un.onclick = () => {
+        mode = "unpainted";
+        un.classList.add("active"); pa.classList.remove("active");
+        artVisual.innerHTML = cardArtInner(p, "unpainted", idx);
+        priceEl.textContent = "$"+p.base;
+      };
+      pa.onclick = () => {
+        mode = "painted";
+        pa.classList.add("active"); un.classList.remove("active");
+        artVisual.innerHTML = cardArtInner(p, "painted", idx);
+        priceEl.textContent = "$"+p.paint;
+      };
+      addBtn.onclick = () => {
+        const price = mode === "painted" ? p.paint : p.base;
+        addToCart({name:p.name, series:p.series, mode, price, source:"shop"});
+        addBtn.textContent="✓"; setTimeout(()=>addBtn.textContent="+",600);
+      };
+      grid.appendChild(card);
+    });
+}
+
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    filter = chip.dataset.filter;
+    render();
+  });
+});
+
+document.getElementById("sortSelect").addEventListener("change", (e) => {
+  sortMode = e.target.value;
+  render();
+});
+
+/* ---------- gacha ---------- */
+const pullBtn = document.getElementById("pullBtn");
+const gachaMachine = document.getElementById("gachaMachine");
+const overlay = document.getElementById("revealOverlay");
+const revealArt = document.getElementById("revealArt");
+const revealName = document.getElementById("revealName");
+const revealSeries = document.getElementById("revealSeries");
+const revealTierTag = document.getElementById("revealTierTag");
+const revealContent = document.getElementById("revealContent");
+const capsuleCrack = document.getElementById("capsuleCrack");
+const capsuleShell = document.getElementById("capsuleShell");
+const capsuleTop = document.getElementById("capsuleTop");
+const capsuleBottom = document.getElementById("capsuleBottom");
+const revealCloseBtn = document.getElementById("revealCloseBtn");
+
+let currentPick = null;
+let currentMode = "unpainted";
+
+const tierStyle = {
+  COMMON:    {color:"var(--text-dim)", bg:"rgba(255,255,255,0.08)"},
+  RARE:      {color:"var(--cyan)",     bg:"rgba(63,225,255,0.15)"},
+  LEGENDARY: {color:"var(--gold)",     bg:"rgba(255,207,92,0.18)"}
+};
+
+// 15-color palette the capsule shell picks from at random, independent of rarity —
+// so the capsule color never tips off what tier is inside.
+const capsulePalette = [
+  "#ff3d81","#3fe1ff","#ffcf5c","#7c4dff","#4caf50",
+  "#ff7043","#26c6da","#ec407a","#ab47bc","#66bb6a",
+  "#ffca28","#5c6bc0","#8d6e63","#42a5f5","#d4e157"
+];
+function randomCapsuleColor(){
+  return capsulePalette[Math.floor(Math.random()*capsulePalette.length)];
+}
+
+function weightedTier(){
+  const r = Math.random()*100;
+  if (r < 65) return "COMMON";
+  if (r < 93) return "RARE";
+  return "LEGENDARY";
+}
+
+function closeReveal(){
+  overlay.classList.remove("show");
+}
+
+pullBtn.addEventListener("click", doPull);
+revealCloseBtn.addEventListener("click", closeReveal);
+overlay.addEventListener("click", (e) => { if (e.target === overlay) closeReveal(); });
+document.getElementById("pullAgainBtn").addEventListener("click", () => { doPull(); });
+document.getElementById("keepBtn").addEventListener("click", () => {
+  if (currentPick){
+    const price = currentMode === "painted" ? GACHA_PRICE_PAINTED : GACHA_PRICE_UNPAINTED;
+    addToCart({name: currentPick.name, series: currentPick.series, mode: currentMode, price, source:"gacha"});
+  }
+  closeReveal();
+});
+
+function doPull(){
+  pullBtn.disabled = true;
+  overlay.classList.remove("show");
+  gachaMachine.classList.add("shaking");
+  gachaMachine.querySelectorAll(".capsule").forEach(c => c.classList.add("falling"));
+  playCrankSound();
+  setTimeout(playDropSound, 620);
+
+  setTimeout(() => {
+    gachaMachine.classList.remove("shaking");
+    gachaMachine.querySelectorAll(".capsule").forEach(c => c.classList.remove("falling"));
+
+    currentMode = document.querySelector('input[name="gachaPaint"]:checked').value;
+    currentPick = products[Math.floor(Math.random()*products.length)];
+    const tier = weightedTier();
+    const style = tierStyle[tier];
+
+    // fill hidden content ahead of time
+    revealTierTag.textContent = tier;
+    revealTierTag.style.color = style.color;
+    revealTierTag.style.background = style.bg;
+    const revealPhoto = currentMode === "painted"
+      ? (currentPick.photoPainted || currentPick.photoRaw)
+      : (currentPick.photoRaw || currentPick.photoPainted);
+    if (revealPhoto){
+      revealArt.style.background = "none";
+      revealArt.innerHTML = `<img src="${revealPhoto}" alt="${escapeHtml(currentPick.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">`;
+    } else {
+      revealArt.style.background = `linear-gradient(160deg, ${currentPick.a}, ${currentPick.b})`;
+      revealArt.innerHTML = figureSvg(currentMode==="painted" ? "#ff3d81" : "#c9c2de");
+    }
+    revealName.textContent = currentPick.name;
+    revealSeries.textContent = `${currentPick.series} · ${currentMode==="painted" ? "Painted" : "Unpainted"}`;
+
+    // reset animation state
+    revealContent.classList.remove("show");
+    capsuleCrack.style.display = "flex";
+    capsuleCrack.classList.remove("cracking");
+    capsuleShell.classList.remove("wobbling");
+    capsuleTop.style.background = randomCapsuleColor();
+    capsuleBottom.style.background = capsuleTop.style.background;
+    capsuleTop.style.filter = "brightness(1.08)";
+    capsuleBottom.style.filter = "brightness(0.82)";
+    void capsuleCrack.offsetWidth; // force reflow so animation restarts
+
+    overlay.classList.add("show");
+
+    // wobble, then crack open, then reveal
+    capsuleShell.classList.add("wobbling");
+    click(0.05); click(0.2); click(0.35); // little rattle while it wobbles
+    setTimeout(() => {
+      capsuleCrack.classList.add("cracking");
+      playCrackSound();
+      setTimeout(() => {
+        capsuleCrack.style.display = "none";
+        revealContent.classList.add("show");
+        playChimeSound(tier);
+      }, 520);
+    }, 550);
+
+    pullBtn.disabled = false;
+  }, 750);
+}
+
+/* ---------- storage helpers (persistent artifact storage, with in-memory fallback) ---------- */
+const memoryStore = { shared:{}, local:{} };
+async function kvGet(key, shared){
+  try {
+    if (window.storage){
+      const r = await window.storage.get(key, !!shared);
+      return r ? JSON.parse(r.value) : null;
+    }
+  } catch(e){ /* missing key or storage unavailable */ }
+  const store = shared ? memoryStore.shared : memoryStore.local;
+  return store.hasOwnProperty(key) ? store[key] : null;
+}
+async function kvSet(key, value, shared){
+  try {
+    if (window.storage){ await window.storage.set(key, JSON.stringify(value), !!shared); return; }
+  } catch(e){}
+  const store = shared ? memoryStore.shared : memoryStore.local;
+  store[key] = value;
+}
+async function kvList(prefix, shared){
+  try {
+    if (window.storage){
+      const r = await window.storage.list(prefix, !!shared);
+      return r ? r.keys : [];
+    }
+  } catch(e){}
+  const store = shared ? memoryStore.shared : memoryStore.local;
+  return Object.keys(store).filter(k => !prefix || k.startsWith(prefix));
+}
+async function kvDelete(key, shared){
+  try {
+    if (window.storage){ await window.storage.delete(key, !!shared); return; }
+  } catch(e){}
+  const store = shared ? memoryStore.shared : memoryStore.local;
+  delete store[key];
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* ---------- accounts & orders ---------- */
+const ORDER_STATUSES = ["Received","In Queue","Printing","Painting/Packing","Shipped","Delivered"];
+const ADMIN_PASSCODE = "grail-owner"; // placeholder only — replace with real auth before launch
+
+let currentUser = null; // {email}
+let isAdmin = false;
+let authTab = "login"; // "login" | "signup"
+let viewState = "auth"; // "auth" | "adminLogin" | "admin" (customer view is implied by currentUser)
+let adminTab = "orders"; // "orders" | "catalog"
+let editingProductId = null; // null = not editing; "new" = adding; else product id
+let editingPhotoRaw = null;
+let editingPhotoPainted = null;
+
+async function signUp(email, password, emailOptIn){
+  email = email.trim().toLowerCase();
+  if (!email || !password) throw new Error("Enter an email and password.");
+  const existing = await kvGet(`account:${email}`, true);
+  if (existing) throw new Error("An account with that email already exists — try logging in.");
+  await kvSet(`account:${email}`, {email, password, emailOptIn: !!emailOptIn, createdAt: Date.now()}, true);
+  return {email, emailOptIn: !!emailOptIn};
+}
+async function logIn(email, password){
+  email = email.trim().toLowerCase();
+  const acc = await kvGet(`account:${email}`, true);
+  if (!acc || acc.password !== password) throw new Error("Email or password is incorrect.");
+  return {email: acc.email, emailOptIn: !!acc.emailOptIn};
+}
+async function setAccountEmailOptIn(email, optIn){
+  const acc = await kvGet(`account:${email}`, true);
+  if (!acc) return;
+  acc.emailOptIn = !!optIn;
+  await kvSet(`account:${email}`, acc, true);
+}
+async function listAllSubscriberEmails(){
+  const emails = [];
+  const accKeys = await kvList("account:", true);
+  for (const k of accKeys){ const a = await kvGet(k, true); if (a && a.emailOptIn) emails.push(a.email); }
+  return emails.sort();
+}
+function downloadCsv(filename, csvContent){
+  const blob = new Blob([csvContent], {type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+async function saveOrder(order){
+  await kvSet(`order:${order.id}`, order, true);
+}
+async function listOrdersForEmail(email){
+  const keys = await kvList("order:", true);
+  const orders = [];
+  for (const k of keys){
+    const o = await kvGet(k, true);
+    if (o && o.customerEmail === email) orders.push(o);
+  }
+  orders.sort((a,b) => b.createdAt - a.createdAt);
+  return orders;
+}
+async function listAllOrders(){
+  const keys = await kvList("order:", true);
+  const orders = [];
+  for (const k of keys){
+    const o = await kvGet(k, true);
+    if (o) orders.push(o);
+  }
+  orders.sort((a,b) => b.createdAt - a.createdAt);
+  return orders;
+}
+async function updateOrderStatus(orderId, status){
+  const o = await kvGet(`order:${orderId}`, true);
+  if (!o) return;
+  o.status = status;
+  o.updatedAt = Date.now();
+  await kvSet(`order:${orderId}`, o, true);
+}
+
+/* ---------- account panel rendering ---------- */
+function buildTracker(status){
+  const idx = ORDER_STATUSES.indexOf(status);
+  return `<div class="tracker">` + ORDER_STATUSES.map((s,i) => {
+    let cls = "";
+    if (i < idx) cls = "done"; else if (i === idx) cls = "current";
+    return `<div class="tracker-step ${cls}"><div class="tracker-line"></div><div class="tracker-dot"></div><div class="tracker-label">${s}</div></div>`;
+  }).join("") + `</div>`;
+}
+function buildHuntCard(o){
+  const dateStr = new Date(o.createdAt).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"});
+  const itemNames = o.items.map(i => i.name).join(", ");
+  return `<div class="hunt-card">
+    <div class="hunt-top"><div class="hunt-id">#${o.id}</div><div class="hunt-date">${dateStr}</div></div>
+    <div class="hunt-meta"><b>${o.count}</b> figure${o.count>1?"s":""} · <b>$${o.total}</b> · ${escapeHtml(itemNames)}</div>
+    ${buildTracker(o.status)}
+  </div>`;
+}
+
+function renderAuthForms(panel){
+  panel.innerHTML = `
+    <div class="auth-tabs">
+      <button data-tab="login" class="${authTab==="login"?"active":""}">Log In</button>
+      <button data-tab="signup" class="${authTab==="signup"?"active":""}">Sign Up</button>
+    </div>
+    <div class="field"><label>Email</label><input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="field"><label>Password</label><input type="password" id="authPassword" placeholder="••••••••" autocomplete="${authTab==="login"?"current-password":"new-password"}"></div>
+    ${authTab==="signup" ? `<div class="notify-row"><label class="notify-toggle"><input type="checkbox" id="signupOptIn"><span>📬 Notify me about new figure drops and restocks</span></label></div>` : ""}
+    <div class="auth-error" id="authError" style="display:none;"></div>
+    <button class="auth-submit" id="authSubmit">${authTab==="login" ? "Log In" : "Create Account"}</button>
+    <div class="auth-note">Prototype accounts only — stored for demo purposes, not securely encrypted. Don't reuse a real password.</div>
+  `;
+  panel.querySelectorAll(".auth-tabs button").forEach(btn => {
+    btn.addEventListener("click", () => { authTab = btn.dataset.tab; renderAccountPanel(); });
+  });
+  document.getElementById("authSubmit").addEventListener("click", async () => {
+    const email = document.getElementById("authEmail").value;
+    const password = document.getElementById("authPassword").value;
+    const optIn = authTab === "signup" ? document.getElementById("signupOptIn").checked : false;
+    const errEl = document.getElementById("authError");
+    errEl.style.display = "none";
+    try {
+      const user = authTab === "login" ? await logIn(email, password) : await signUp(email, password, optIn);
+      currentUser = user;
+      renderAccountPanel();
+    } catch(e){
+      errEl.textContent = e.message || "Something went wrong.";
+      errEl.style.display = "block";
+    }
+  });
+}
+
+async function renderCustomerView(panel){
+  const orders = await listOrdersForEmail(currentUser.email);
+  const ordersHtml = orders.length === 0
+    ? `<div class="hunt-empty">No hunts yet.<br>Grab a figure from the shop or pull a capsule to get started.</div>`
+    : orders.map(buildHuntCard).join("");
+  panel.innerHTML = `
+    <div class="account-head">
+      <div class="account-greet">Welcome back, <span>${escapeHtml(currentUser.email)}</span></div>
+      <button class="logout-btn" id="logoutBtn">Log Out</button>
+    </div>
+    <div class="notify-row">
+      <label class="notify-toggle">
+        <input type="checkbox" id="notifyToggle" ${currentUser.emailOptIn ? "checked" : ""}>
+        <span>📬 Email me about new figure drops and restocks</span>
+      </label>
+    </div>
+    ${ordersHtml}
+  `;
+  document.getElementById("logoutBtn").addEventListener("click", () => { currentUser = null; renderAccountPanel(); });
+  document.getElementById("notifyToggle").addEventListener("change", async (e) => {
+    currentUser.emailOptIn = e.target.checked;
+    await setAccountEmailOptIn(currentUser.email, e.target.checked);
+  });
+}
+
+function renderAdminLoginForm(panel){
+  panel.innerHTML = `
+    <div class="admin-login">
+      <div class="field"><label>Owner Passcode</label><input type="password" id="adminPasscode" placeholder="Enter passcode"></div>
+      <div class="auth-error" id="adminError" style="display:none;"></div>
+      <button class="auth-submit" id="adminSubmit">Enter Dashboard</button>
+      <div class="auth-note">Placeholder passcode for this prototype: <b>${ADMIN_PASSCODE}</b>. Swap in real authentication before this goes live.</div>
+    </div>
+  `;
+  document.getElementById("adminSubmit").addEventListener("click", () => {
+    const val = document.getElementById("adminPasscode").value;
+    if (val === ADMIN_PASSCODE){
+      isAdmin = true; viewState = "admin"; renderAccountPanel();
+    } else {
+      const errEl = document.getElementById("adminError");
+      errEl.textContent = "That's not the right passcode.";
+      errEl.style.display = "block";
+    }
+  });
+}
+
+async function renderAdminView(panel){
+  panel.innerHTML = `
+    <div class="account-head">
+      <div class="account-greet">Owner Dashboard</div>
+      <button class="logout-btn" id="adminLogoutBtn">Log Out</button>
+    </div>
+    <div class="admin-tabs">
+      <button data-tab="orders" class="${adminTab==="orders"?"active":""}">Orders</button>
+      <button data-tab="catalog" class="${adminTab==="catalog"?"active":""}">Catalog</button>
+    </div>
+    <div id="adminTabBody"><div class="account-loading">Loading...</div></div>
+  `;
+  document.getElementById("adminLogoutBtn").addEventListener("click", () => { isAdmin = false; viewState = "auth"; adminTab = "orders"; editingProductId = null; renderAccountPanel(); });
+  panel.querySelectorAll(".admin-tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      adminTab = btn.dataset.tab;
+      editingProductId = null;
+      renderAdminView(panel);
+    });
+  });
+  const body = document.getElementById("adminTabBody");
+  if (adminTab === "catalog"){
+    await renderAdminCatalog(body);
+  } else {
+    await renderAdminOrders(body);
+  }
+}
+
+async function renderAdminOrders(body){
+  const orders = await listAllOrders();
+  const subscriberEmails = await listAllSubscriberEmails();
+  const listHtml = orders.length === 0
+    ? `<div class="hunt-empty">No orders yet.</div>`
+    : `<div class="admin-list">` + orders.map(o => `
+        <div class="admin-card" data-order-id="${o.id}">
+          <div class="hunt-top"><div class="hunt-id">#${o.id}</div><div class="hunt-date">${new Date(o.createdAt).toLocaleDateString()}</div></div>
+          <div class="admin-email">${escapeHtml(o.customerEmail || "guest checkout")}</div>
+          <div class="hunt-meta"><b>${o.count}</b> figure${o.count>1?"s":""} · <b>$${o.total}</b> · ${escapeHtml(o.items.map(i=>i.name).join(", "))}</div>
+          <div class="admin-status-row">
+            <select class="admin-status-select">
+              ${ORDER_STATUSES.map(s => `<option value="${s}" ${s===o.status?"selected":""}>${s}</option>`).join("")}
+            </select>
+            <span class="admin-saved">Saved ✓</span>
+          </div>
+        </div>`).join("") + `</div>`;
+  body.innerHTML = `
+    <div class="admin-subscribers">
+      <div class="admin-sub-count"><b>${subscriberEmails.length}</b> people opted in for drop &amp; restock emails</div>
+      <button class="btn btn-ghost" id="exportCsvBtn" ${subscriberEmails.length===0?"disabled":""}>Export list as CSV</button>
+      <div class="admin-sub-note">No emails are actually sent from this prototype — export this list into a real email tool (Mailchimp, Klaviyo, Resend, etc.) to send campaigns.</div>
+    </div>
+    ${listHtml}
+  `;
+  const exportBtn = document.getElementById("exportCsvBtn");
+  if (exportBtn && !exportBtn.disabled){
+    exportBtn.addEventListener("click", () => {
+      const csv = "email\n" + subscriberEmails.map(e => `"${e.replace(/"/g,'""')}"`).join("\n");
+      downloadCsv("grail-figures-subscribers.csv", csv);
+    });
+  }
+  body.querySelectorAll(".admin-card").forEach(card => {
+    const select = card.querySelector(".admin-status-select");
+    const saved = card.querySelector(".admin-saved");
+    select.addEventListener("change", async () => {
+      await updateOrderStatus(card.dataset.orderId, select.value);
+      saved.classList.add("show");
+      setTimeout(() => saved.classList.remove("show"), 1500);
+    });
+  });
+}
+
+function catalogThumbInner(p){
+  if (p.photoRaw || p.photoPainted) return `<img src="${p.photoRaw || p.photoPainted}" alt="">`;
+  return figureSvg("#c9c2de");
+}
+
+async function renderAdminCatalog(body){
+  if (editingProductId !== null){
+    renderProductForm(body);
+    return;
+  }
+  const listHtml = products.length === 0
+    ? `<div class="hunt-empty">No figures in the catalog yet.</div>`
+    : `<div class="catalog-list">` + products.map(p => `
+        <div class="catalog-row" data-id="${p.id}">
+          <div class="catalog-thumb" style="--art-a:${p.a};--art-b:${p.b}">${catalogThumbInner(p)}</div>
+          <div class="catalog-info">
+            <div class="ci-name">${escapeHtml(p.name)}</div>
+            <div class="ci-meta">${escapeHtml(p.series)}${p.designer ? " · " + escapeHtml(p.designer) : ""} · ${p.cat.includes("fullsize")?"Fullsize":"Bust"} · $${p.base}/$${p.paint}</div>
+          </div>
+          <div class="catalog-actions">
+            <button class="edit-btn" title="Edit">✎</button>
+            <button class="del-btn" title="Delete">🗑</button>
+          </div>
+        </div>`).join("") + `</div>`;
+  body.innerHTML = `
+    <button class="catalog-add-btn" id="addProductBtn">+ Add New Figure</button>
+    ${listHtml}
+  `;
+  document.getElementById("addProductBtn").addEventListener("click", () => {
+    editingProductId = "new";
+    editingPhotoRaw = null;
+    editingPhotoPainted = null;
+    renderAdminCatalog(body);
+  });
+  body.querySelectorAll(".catalog-row").forEach(row => {
+    const id = row.dataset.id;
+    row.querySelector(".edit-btn").addEventListener("click", () => {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      editingProductId = id;
+      editingPhotoRaw = p.photoRaw || null;
+      editingPhotoPainted = p.photoPainted || null;
+      renderAdminCatalog(body);
+    });
+    row.querySelector(".del-btn").addEventListener("click", async () => {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      if (!window.confirm(`Remove "${p.name}" from the catalog? This can't be undone.`)) return;
+      await deleteProduct(id);
+      products = await loadProducts();
+      render();
+      renderAdminCatalog(body);
+    });
+  });
+}
+
+function renderProductForm(body){
+  const isNew = editingProductId === "new";
+  const p = isNew ? null : products.find(x => x.id === editingProductId);
+  if (!isNew && !p){ editingProductId = null; renderAdminCatalog(body); return; }
+  const sizeVal = p ? (p.cat.includes("fullsize") ? "fullsize" : "bust") : "fullsize";
+  const genreVal = p ? (p.cat.find(c => ["anime","games","other"].includes(c)) || "other") : "anime";
+
+  body.innerHTML = `
+    <div class="product-form">
+      <div class="form-title">${isNew ? "Add New Figure" : "Edit Figure"}</div>
+
+      <div class="field"><label>Figure Name</label><input type="text" id="pfName" placeholder="e.g. Kokushibo" value="${p ? escapeHtml(p.name) : ""}"></div>
+      <div class="field"><label>Series</label><input type="text" id="pfSeries" placeholder="e.g. Demon Slayer" value="${p ? escapeHtml(p.series) : ""}"></div>
+      <div class="field"><label>Designer / Patreon (optional)</label><input type="text" id="pfDesigner" placeholder="e.g. Tanuki Figures" value="${p && p.designer ? escapeHtml(p.designer) : ""}"></div>
+
+      <div class="radio-row">
+        <label><input type="radio" name="pfSize" value="fullsize" ${sizeVal==="fullsize"?"checked":""}><span>Fullsize</span></label>
+        <label><input type="radio" name="pfSize" value="bust" ${sizeVal==="bust"?"checked":""}><span>Bust</span></label>
+      </div>
+      <div class="radio-row">
+        <label><input type="radio" name="pfGenre" value="anime" ${genreVal==="anime"?"checked":""}><span>Anime</span></label>
+        <label><input type="radio" name="pfGenre" value="games" ${genreVal==="games"?"checked":""}><span>Games</span></label>
+        <label><input type="radio" name="pfGenre" value="other" ${genreVal==="other"?"checked":""}><span>Other</span></label>
+      </div>
+
+      <div class="form-row">
+        <div class="field"><label>Raw Price ($)</label><input type="number" min="0" step="1" id="pfBase" value="${p ? p.base : ""}"></div>
+        <div class="field"><label>Painted Price ($)</label><input type="number" min="0" step="1" id="pfPaint" value="${p ? p.paint : ""}"></div>
+      </div>
+
+      <div class="photo-upload-row">
+        <div class="photo-upload">
+          <label class="pu-label">Raw / Unpainted Photo</label>
+          <div class="photo-drop" id="rawDrop">
+            ${editingPhotoRaw ? `<img src="${editingPhotoRaw}">` : `<div class="pd-label">Tap to upload</div>`}
+            <input type="file" accept="image/*" id="rawFileInput">
+          </div>
+          ${editingPhotoRaw ? `<button type="button" class="photo-clear" id="rawClearBtn">Remove photo</button>` : ""}
+        </div>
+        <div class="photo-upload">
+          <label class="pu-label">Painted Photo</label>
+          <div class="photo-drop" id="paintedDrop">
+            ${editingPhotoPainted ? `<img src="${editingPhotoPainted}">` : `<div class="pd-label">Tap to upload</div>`}
+            <input type="file" accept="image/*" id="paintedFileInput">
+          </div>
+          ${editingPhotoPainted ? `<button type="button" class="photo-clear" id="paintedClearBtn">Remove photo</button>` : ""}
+        </div>
+      </div>
+      <div class="auth-note" style="margin:-4px 0 12px;">No photo? A generated placeholder is used instead — you can add one anytime.</div>
+
+      <div class="form-error" id="pfError" style="display:none;"></div>
+      <div class="form-actions">
+        <button class="cancel-btn" id="pfCancel">Cancel</button>
+        <button class="save-btn" id="pfSave">${isNew ? "Add Figure" : "Save Changes"}</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("pfCancel").addEventListener("click", () => {
+    editingProductId = null;
+    renderAdminCatalog(body);
+  });
+
+  document.getElementById("rawFileInput").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try { editingPhotoRaw = await readAndCompressImage(file); renderProductForm(body); }
+    catch(err){ /* ignore bad file */ }
+  });
+  document.getElementById("paintedFileInput").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try { editingPhotoPainted = await readAndCompressImage(file); renderProductForm(body); }
+    catch(err){ /* ignore bad file */ }
+  });
+  const rawClear = document.getElementById("rawClearBtn");
+  if (rawClear) rawClear.addEventListener("click", () => { editingPhotoRaw = null; renderProductForm(body); });
+  const paintedClear = document.getElementById("paintedClearBtn");
+  if (paintedClear) paintedClear.addEventListener("click", () => { editingPhotoPainted = null; renderProductForm(body); });
+
+  document.getElementById("pfSave").addEventListener("click", async () => {
+    const name = document.getElementById("pfName").value.trim();
+    const series = document.getElementById("pfSeries").value.trim();
+    const designer = document.getElementById("pfDesigner").value.trim();
+    const size = document.querySelector('input[name="pfSize"]:checked').value;
+    const genre = document.querySelector('input[name="pfGenre"]:checked').value;
+    const base = parseFloat(document.getElementById("pfBase").value);
+    const paint = parseFloat(document.getElementById("pfPaint").value);
+    const errEl = document.getElementById("pfError");
+    errEl.style.display = "none";
+    if (!name || !series){ errEl.textContent = "Enter a name and series."; errEl.style.display = "block"; return; }
+    if (isNaN(base) || isNaN(paint) || base < 0 || paint < 0){ errEl.textContent = "Enter valid prices for both raw and painted."; errEl.style.display = "block"; return; }
+
+    const [gA, gB] = (p && p.a && p.b) ? [p.a, p.b] : pickGradientForName(name);
+    const record = {
+      id: isNew ? ("p_" + Date.now() + "_" + Math.floor(Math.random()*1000)) : p.id,
+      name, series, designer: designer || null,
+      cat: [size, genre],
+      base, paint,
+      a: gA, b: gB,
+      photoRaw: editingPhotoRaw || null,
+      photoPainted: editingPhotoPainted || null
+    };
+    await saveProduct(record);
+    products = await loadProducts();
+    editingProductId = null;
+    render();
+    renderAdminCatalog(body);
+  });
+}
+
+async function renderAccountPanel(){
+  const panel = document.getElementById("accountPanel");
+  const tag = document.getElementById("accountTag");
+  const title = document.getElementById("accountTitle");
+  const desc = document.getElementById("accountDesc");
+
+  if (isAdmin){
+    tag.textContent = "Owner Dashboard";
+    title.textContent = "All Orders";
+    desc.textContent = "Update any customer's order status — they'll see it next time they check My Hunts.";
+    panel.innerHTML = `<div class="account-loading">Loading orders...</div>`;
+    await renderAdminView(panel);
+    return;
+  }
+  if (viewState === "adminLogin"){
+    tag.textContent = "Owner Access";
+    title.textContent = "Shop Owner Login";
+    desc.textContent = "This prototype uses a placeholder passcode — swap in real authentication before going live.";
+    renderAdminLoginForm(panel);
+    return;
+  }
+  if (currentUser){
+    tag.textContent = "Welcome Back";
+    title.textContent = "My Hunts";
+    desc.textContent = "Every figure you've ordered, and where it's at in the queue.";
+    panel.innerHTML = `<div class="account-loading">Loading your hunts...</div>`;
+    await renderCustomerView(panel);
+    return;
+  }
+  tag.textContent = "Track Your Order";
+  title.textContent = "My Hunts";
+  desc.textContent = "Log in to see every figure you've ordered and where it's at in the queue.";
+  renderAuthForms(panel);
+}
+
+document.getElementById("ownerLoginLink").addEventListener("click", () => {
+  currentUser = null;
+  viewState = "adminLogin";
+  renderAccountPanel();
+  document.getElementById("account").scrollIntoView({behavior:"smooth"});
+});
+
+renderAccountPanel();
+
+/* ---------- checkout counter ---------- */
+const receiptEl = document.getElementById("receipt");
+const counterFooter = document.getElementById("counterFooter");
+const bellBtn = document.getElementById("bellBtn");
+const cartPillBtn = document.getElementById("cartPillBtn");
+
+cartPillBtn.addEventListener("click", () => document.getElementById("counter").scrollIntoView({behavior:"smooth"}));
+bellBtn.addEventListener("click", () => {
+  bellBtn.classList.remove("rung"); void bellBtn.offsetWidth;
+  bellBtn.classList.add("rung");
+  playBellSound();
+});
+
+function renderCart(){
+  if (cartItems.length === 0){
+    receiptEl.innerHTML = `<div class="receipt-empty">The counter's empty.<br>Grab a figure from the shop or take a shot at the capsule machine.
+      <div><button class="btn btn-primary" style="margin-top:14px;" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Browse the Shop</button></div>
+    </div>`;
+    const cb = document.getElementById("checkoutBtn");
+    if (cb) cb.disabled = true;
+    return;
+  }
+  let rows = "";
+  let total = 0;
+  cartItems.forEach(item => {
+    total += item.price;
+    rows += `<div class="receipt-line">
+      <div class="rl-info">
+        <div class="rl-name">${item.name}</div>
+        <div class="rl-meta">${item.series} · ${item.mode==="painted"?"Painted":"Unpainted"}${item.source==="gacha" ? " · Blind Box" : ""}</div>
+      </div>
+      <div class="rl-right">
+        <div class="rl-price">$${item.price}</div>
+        <button class="rl-remove" data-id="${item.id}" title="Remove">✕</button>
+      </div>
+    </div>`;
+  });
+  receiptEl.innerHTML = rows + `<div class="receipt-total-row"><span class="tot-label">Total</span><span>$${total}</span></div>`;
+  receiptEl.querySelectorAll(".rl-remove").forEach(btn => {
+    btn.addEventListener("click", () => removeFromCart(Number(btn.dataset.id)));
+  });
+  const cb = document.getElementById("checkoutBtn");
+  if (cb) cb.disabled = false;
+}
+renderCart();
+
+counterFooter.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "checkoutBtn" && !e.target.disabled){
+    runCheckoutSequence();
+  } else if (e.target && e.target.id === "newOrderBtn"){
+    cartItems = [];
+    updateCartBadge();
+    renderCart();
+    counterFooter.innerHTML = `<button class="checkout-btn" id="checkoutBtn" disabled>Complete the Hunt</button><div class="checkout-note">Payments aren't wired up in this prototype yet</div>`;
+  }
+});
+
+function estimateCraftDays(count){
+  // 1 figure ~ 10 days on its own; each additional figure adds to the queue.
+  const base = 10;
+  const perExtra = 2;
+  return base + Math.max(0, count - 1) * perExtra;
+}
+
+function runCheckoutSequence(){
+  const count = cartItems.length;
+  const total = cartItems.reduce((s,i) => s + i.price, 0);
+  const orderId = "GF-" + Math.floor(10000 + Math.random()*89999);
+  const craftDays = estimateCraftDays(count); // scales with how many figures are in the order
+
+  // Stage 1: stamping the slip "PAID"
+  counterFooter.innerHTML = `
+    <div class="seq-stage" id="stampStageEl">
+      <div class="slip-mini">🧾</div>
+      <div class="stamp-mark" id="stampMarkEl">PAID</div>
+      <div class="seq-caption" id="stampCaption">Stamping your order...</div>
+    </div>`;
+  const stampMark = document.getElementById("stampMarkEl");
+  const stampCaption = document.getElementById("stampCaption");
+  setTimeout(() => {
+    stampMark.classList.add("stamped");
+    stampCaption.classList.add("show");
+    playStampSound();
+  }, 200);
+
+  // Stage 2: box packing (flaps close, tape, wax seal)
+  setTimeout(() => {
+    counterFooter.innerHTML = `
+      <div class="seq-stage" id="boxStageEl">
+        <svg class="ship-box" viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg">
+          <rect x="38" y="66" width="84" height="58" rx="3" fill="#2f2650" stroke="#453a72" stroke-width="2"/>
+          <rect x="38" y="66" width="84" height="58" rx="3" fill="none" stroke="#1a1430" stroke-width="1" opacity="0.4"/>
+          <line x1="38" y1="95" x2="122" y2="95" stroke="#453a72" stroke-width="1.5" opacity="0.6"/>
+          <path class="flap-left" d="M38 66 L38 30 L80 66 Z" fill="#372c5e" stroke="#453a72" stroke-width="2"/>
+          <path class="flap-right" d="M122 66 L122 30 L80 66 Z" fill="#251d42" stroke="#453a72" stroke-width="2"/>
+          <rect class="tape-strip" x="66" y="30" width="28" height="96" rx="2" fill="#ffcf5c" opacity="0.85"/>
+          <g class="wax-seal">
+            <circle cx="80" cy="80" r="17" fill="#ff3d81"/>
+            <circle cx="80" cy="80" r="17" fill="none" stroke="#a11f52" stroke-width="2"/>
+            <text x="80" y="86" text-anchor="middle" font-family="Rampart One, cursive" font-size="15" fill="#1a0c14">G</text>
+          </g>
+        </svg>
+        <div class="seq-caption" id="boxCaption">Boxing it up...</div>
+      </div>`;
+    const boxStage = document.getElementById("boxStageEl");
+    const boxCaption = document.getElementById("boxCaption");
+    boxCaption.classList.add("show");
+
+    setTimeout(() => { boxStage.classList.add("closed"); playTapeSound(); }, 120);
+    setTimeout(() => { boxStage.classList.add("taped"); boxCaption.textContent = "Taping the box..."; }, 550);
+    setTimeout(() => { boxStage.classList.add("sealed"); playSealSound(); boxCaption.textContent = "Sealing your Grail..."; }, 1000);
+
+    // Stage 3: order summary
+    setTimeout(async () => {
+      const orderRecord = {
+        id: orderId,
+        customerEmail: currentUser ? currentUser.email : null,
+        items: cartItems.map(i => ({name:i.name, series:i.series, mode:i.mode, price:i.price})),
+        count, total, craftDays,
+        status: ORDER_STATUSES[0],
+        createdAt: Date.now()
+      };
+      if (currentUser){
+        await saveOrder(orderRecord);
+      }
+
+      const trackNote = currentUser
+        ? `Saved to <b style="color:var(--text);">My Hunts</b> — track it anytime.`
+        : `Log in or create an account to track this order next time.`;
+
+      counterFooter.innerHTML = `
+        <div class="order-summary">
+          <div class="order-id">ORDER <span>#${orderId}</span></div>
+          <div class="big">📦 Sealed &amp; ready to craft!</div>
+          <div class="order-meta">
+            <div><b>${count}</b>figure${count>1?"s":""}</div>
+            <div><b>$${total}</b>total</div>
+            <div><b>${craftDays}d</b>est. craft time</div>
+          </div>
+          <div class="checkout-note" style="margin-bottom:2px;">${trackNote}</div>
+          <div class="order-actions">
+            <button class="track" id="trackBtn">Track Your Hunt</button>
+            <button class="newOrder" id="newOrderBtn">Start a New Order</button>
+          </div>
+        </div>`;
+      playShipChime();
+      document.getElementById("trackBtn").addEventListener("click", () => {
+        viewState = "auth";
+        renderAccountPanel();
+        document.getElementById("account").scrollIntoView({behavior:"smooth"});
+      });
+    }, 1650);
+  }, 850);
+}
+
+/* ---------- app bootstrap ---------- */
+(async function initApp(){
+  grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.85rem;padding:26px 10px;">Loading figures...</div>`;
+  products = await loadProducts();
+  render();
+})();
+</script>
+</body>
+</html>
